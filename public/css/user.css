@@ -1,0 +1,112 @@
+.banner {
+    opacity: .5;
+  }
+  
+.login-container {
+  max-width: 550px;
+  margin: -270px auto 0 auto;
+  background: white;
+  border-radius: 20px;
+  min-width: 300px;
+}
+  
+.register-container {
+  max-width: 550px;
+  margin: -350px auto 0 auto;
+  background: white;
+  border-radius: 20px;
+  min-width: 300px;
+}
+
+.register-container label {
+  letter-spacing: 2px;
+}
+
+.col-left .form-control:focus {
+  box-shadow: inherit;
+  background-color: inherit;
+  border-color: #B0B0B0;
+}
+
+.col-left div.separate-line small {
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -45%);
+  background: white;
+  top: 0;
+}
+
+.col-left .login-partners-icons a i {
+  color: #17a2b8;
+}
+
+.col-left .login-partners-icons a:hover i {
+  color: #117a8b;
+}
+
+div.col-right {
+  border-radius: 0 20px 20px 0;
+}
+
+.col-right .overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  opacity: .2;
+}
+
+.col-right h3,
+.col-right h4 {
+  text-shadow: 1px 1px 2px rgb(105,105,105);
+}
+
+.animation-info-btn {
+  width: 200px;
+  border: 2px solid #17a2b8;
+  background-color: #17a2b8;
+}
+
+.animation-info-btn:hover {
+  color: black;
+}
+
+.animation-black-btn {
+  width: 100%;
+  border: 2px solid black;
+  background-color: black;
+  /* background: linear-gradient(to right, white 50%, #dc3545 50%); */
+
+}
+
+.animation-black-btn:hover {
+  color: white;
+}
+
+.animation-btn {
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  text-decoration: none;
+  margin: 0 auto;
+  letter-spacing: 3px;
+  transition: all .3s ease-out;
+
+}
+
+.animation-btn:hover {
+  text-decoration: none;
+  transform: scale(1.01);
+  opacity: 0.4;
+}
+
+.fab {
+  transition: transform .2s ease-in;
+}
+.fab:hover {
+  transform: scale(1.2);
+}

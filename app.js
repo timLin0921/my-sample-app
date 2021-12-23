@@ -73,17 +73,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // use flash message
-app.use(flash());
+app.use(flash({sessionKeyName: 'flashMessage'}));
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
-  // check if already authenticated
   res.locals.isAuthenticated = req.isAuthenticated();
-  // add flash keys
+
   res.locals.success_msg = req.flash('success_msg');
   res.locals.warning_msg = req.flash('warning_msg');
   res.locals.fail_msg = req.flash('fail_msg');
-  // keep the name for view to show
   next();
 });
 

@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+  unque: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     default: '',
@@ -18,13 +22,17 @@ const userSchema = new Schema({
     type: Date,
     require: true,
   },
+  provider: {
+    type: String,
+    require: true,
+  },
   lastLoginDate: {
     type: Date,
     require: false,
   },
-  sessionId: {
-    type: String,
-    require: false,
+  loginTimes: {
+    type: Number,
+    default: 0,
   },
 });
 

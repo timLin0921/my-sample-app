@@ -1,4 +1,4 @@
-<section class="mx-auto">
+<section class="form-section --overflow container mx-auto mt-3 mb-3">
   <div class="register-container shadow-lg">
     <div class="row w-100 m-0">
       <div class="col-md-12 col-12 p-5 col-left">
@@ -6,7 +6,6 @@
           <div class="form-group text-center">
             <h2 class="text-info mt-2">Sign Up</h2>
           </div>
-          {{> messages}}
           <div class="form-group">
             <label for="name" class="text-secondary">Name</label>
             <input type="text" name="name" id="name" class="form-control" value="{{name}}">
@@ -27,12 +26,11 @@
         </form>
         <a href="/user/login" class="animation-btn animation-black-btn btn-block mt-3">Sign In</a>
         <div class="text-center mt-5 mb-4 position-relative separate-line">
-            <small class="text-muted">Facebook | Google</small>
           <hr>
         </div>
         <div class="login-partners-icons">
           <h4 class="text-center">
-            <a href="/auth/facebook"><i class="fab fa-facebook mr-1 text-info"></i></a>
+            <a class="mr-3" href="/auth/facebook"><i class="fab fa-facebook mr-1 text-info"></i></a>
             <a href="/auth/google"><i class="fab fa-google text-info"></i></a>
           </h4>
         </div>

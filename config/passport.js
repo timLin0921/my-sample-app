@@ -5,7 +5,7 @@ const User = require('../models/user');
 const LocalStrategy = require('passport-local');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-
+const {oauthCallback} = require('../utils/user');
 const {FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, FACEBOOK_APP_CALLBACK} = config;
 const {GOOGLE_APP_ID, GOOGLE_APP_SECRET, GOOGLE_APP_CALLBACK} = config;
 
@@ -46,10 +46,7 @@ passport.use(
       callbackURL: FACEBOOK_APP_CALLBACK,
       passReqToCallback: true,
     },
-    function (req, accessToken, refreshToken, profile, done) {
-      console.log(profile);
-      return done(null, profile);
-    },
+    oauthCallback('Facebook'),
   ),
 );
 
@@ -63,10 +60,7 @@ passport.use(
       passReqToCallback: true,
       scope: ['profile', 'email'],
     },
-    function (req, accessToken, refreshToken, profile, done) {
-      console.log(profile);
-      return done(null, profile);
-    },
+    oauthCallback('Google'),
   ),
 );
 

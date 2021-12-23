@@ -4,6 +4,7 @@ const passport = require('passport');
 const {
   getLogout,
   getLogin,
+  postLogin,
   getRegister,
   postRegister,
 } = require('../controllers/user');
@@ -12,11 +13,23 @@ router.get('/login', getLogin);
 
 router.post(
   '/login',
+  (req, res, next) => {
+    const {email, password} = req.body;
+    if (!email || !password) {
+      return res.render('login', {
+        email,
+        password,
+        errors: [{message: 'Please input email / password !!'}],
+        userCSS: true,
+      });
+    }
+    next();
+  },
   passport.authenticate('local', {
-    successRedirect: '/',
     failureRedirect: '/user/login',
     failureFlash: true,
   }),
+  postLogin,
 );
 
 router.get('/register', getRegister);

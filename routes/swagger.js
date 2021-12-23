@@ -22,7 +22,7 @@ const options = {
     host: 'localhost:3124',
     basePath: '/api',
   },
-  apis: ['./routes/user.js'],
+  apis: ['./routes/api.js'],
 };
 
 const swaggerJSDoc = require('swagger-jsdoc');

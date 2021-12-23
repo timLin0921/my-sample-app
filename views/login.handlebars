@@ -1,4 +1,4 @@
-<section class="mx-auto">
+<section class="form-section container mx-auto">
   <div class="login-container shadow-lg">
     <div class="row w-100 m-0">
       <div class="col-md-12 col-12 p-5 col-left">
@@ -6,7 +6,6 @@
           <div class="form-group text-center">
             <h2 class="text-info mt-2">Sign In</h2>
           </div>
-          {{> messages}}
           <div class="form-group">
             <label for="email" class="text-secondary">Email</label>
             <input type="email" name="email" id="email" class="form-control">
@@ -20,11 +19,11 @@
         </form>
         <div class="text-center mt-5 mb-4 position-relative separate-line">
           <hr>
-          <small class="text-muted">Facebook | Google</small>
+          <small class="text-muted">or</small>
         </div>
         <div class="login-partners-icons">
           <h4 class="text-center">
-            <a href="/auth/facebook"><i class="fab fa-facebook mr-1"></i></a>
+            <a class="mr-3" href="/auth/facebook"><i class="fab fa-facebook mr-1"></i></a>
             <a href="/auth/google"><i class="fab fa-google "></i></a>
           </h4>
         </div>

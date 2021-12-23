@@ -21,6 +21,7 @@
 
 <body>
   <header>
+    {{#if isAuthenticated}}
     <!-- navigation -->
     <nav class="navbar navbar-light bg-light">
       <div class="container">
@@ -33,11 +34,9 @@
         </div>
       </div>
     </nav>
-    {{#unless isAuthenticated}}
-    <div class="banner"></div>
-    {{/unless}}
+    {{/if}}
   </header>
-
+  <div class="flash-message container">{{> messages}}</div>
   {{{ body }}}
   <script src="/js/jquery-3.4.1.js"></script>
   <script src="/js/popper.min.js"></script>

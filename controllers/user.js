@@ -1,6 +1,6 @@
 // const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const {createUser, encryPassword} = require('../utils/user');
 
 module.exports = {
   getRegister: (req, res) => {
@@ -8,6 +8,14 @@ module.exports = {
   },
   getLogin: async (req, res) => {
     res.render('login', {userCSS: true});
+  },
+  postLogin: async (req, res) => {
+    const {email} = req.body;
+    const user = await User.findOne({email: email});
+    user.lastLoginDate = new Date();
+    user.loginTimes = user.loginTimes + 1;
+    await user.save();
+    res.redirect('/');
   },
   getLogout: (req, res) => {
     req.logout();
@@ -44,7 +52,7 @@ module.exports = {
       });
     }
 
-    User.findOne({email: email}).then((user) => {
+    User.findOne({email: email}).then(async (user) => {
       // if account already exist, redirect to log in page
       if (user) {
         return res.render('login', {
@@ -53,23 +61,27 @@ module.exports = {
           errors: [{message: 'Email has been registered!'}],
         });
       }
-      // otherwise, create new document
-      const newUser = new User({name, email, password});
       // encrypt password
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, async (err, hash) => {
-          if (err) throw err;
-          // replace password with hashed one
-          newUser.password = hash;
-          // save document to user collection
-          try {
-            await newUser.save();
-            return res.redirect('/');
-          } catch (error) {
-            return res.status(403).json({status: 'Fail', errorMessage: error});
-          }
+      const pass = encryPassword(false, password);
+
+      try {
+        await createUser({
+          unque: `${email}_Local`,
+          name: name,
+          email: email,
+          password: pass,
+          createDate: new Date(),
+          provider: 'Local',
         });
-      });
+        req.flash('success_msg', 'Sign up Sucessfull, please sign in!');
+        return res.redirect('/user/login');
+      } catch (err) {
+        return res.render('register', {
+          email,
+          userCSS: true,
+          errors: [{message: `${err}`}],
+        });
+      }
     });
   },
 };
@@ -101,9 +113,9 @@ function passValidator(password, rePassword) {
     });
   }
 
-  if (!/^.*[!@#$%^&*_].+$/.test(password)) {
+  if (!/\W+/.test(password)) {
     errors.push({
-      message: 'Password contains at least one special character(!@#$%^&*_)',
+      message: 'Password contains at least one special character',
     });
   }
 

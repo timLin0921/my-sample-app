@@ -44,6 +44,7 @@ passport.use(
       clientID: FACEBOOK_APP_ID,
       clientSecret: FACEBOOK_APP_SECRET,
       callbackURL: FACEBOOK_APP_CALLBACK,
+      profileFields: ['id', 'displayName', 'photos', 'email'],
       passReqToCallback: true,
     },
     oauthCallback('Facebook'),

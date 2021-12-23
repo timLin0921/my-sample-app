@@ -54,10 +54,12 @@
   z-index: 1001;
   opacity: 0.8;
   max-width: 550px;
+  margin-top: 1rem;
 }
 
 .alert-dismissible{
   padding-right: 3rem;
+  transition: all 0.3s ease-in-out;
 }
 
 @media screen and (min-width: 768px) {

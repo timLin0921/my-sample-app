@@ -10,7 +10,7 @@ module.exports = {
     res.render('login', {userCSS: true});
   },
   postLogin: async (req, res) => {
-    const {email} = req.body;
+    const email = req.body.email || req.user.email;
     const user = await User.findOne({email: email});
     user.lastLoginDate = new Date();
     user.loginTimes = user.loginTimes + 1;

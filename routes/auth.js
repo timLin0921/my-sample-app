@@ -1,16 +1,16 @@
 const express = require('express');
 const router = new express.Router();
-
+const {postLogin} = require('../controllers/user');
 const passport = require('../config/passport');
 
-router.get('/facebook', passport.authenticate('facebook'));
+router.get('/facebook', passport.authenticate('facebook', {scope: ['email']}));
 
 router.get(
   '/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect: '/',
     failureRedirect: '/user/login',
   }),
+  postLogin,
 );
 
 router.get('/google', passport.authenticate('google'));
@@ -18,9 +18,9 @@ router.get('/google', passport.authenticate('google'));
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: '/',
     failureRedirect: '/user/login',
   }),
+  postLogin,
 );
 
 module.exports = router;

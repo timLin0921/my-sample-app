@@ -99,6 +99,7 @@ module.exports = {
   },
 
   userConfirmMail: async (req, res) => {
+    req.session.destroy();
     const data = verifyJwtToken(req.params.token);
     if (data.error) {
       return res.status(404).render('404');
@@ -112,10 +113,9 @@ module.exports = {
     if (user && !user.emailVerified) {
       user.emailVerified = true;
       await user.save();
-      req.flash('success_msg', 'Account is actived, please sign in!');
     }
 
-    return res.redirect('/user/login');
+    return res.redirect('/user/welcome');
   },
 };
 

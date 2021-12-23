@@ -39,6 +39,10 @@ router.post('/register', postRegister);
 
 router.get('/logout', getLogout);
 
+router.get('/welcome', (req, res) => {
+  return res.render('welcome');
+});
+
 router.get('/confirm/:token', userConfirmMail);
 
 module.exports = router;

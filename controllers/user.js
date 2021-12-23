@@ -1,13 +1,19 @@
 // const mongoose = require('mongoose');
 const User = require('../models/user');
+const {sendMail} = require('../utils/mail');
+const {getUserByParams} = require('../utils/userHandler');
 const {createUser, encryPassword} = require('../utils/user');
+const {genJwtToken, verifyJwtToken} = require('../utils/jwtVerify');
 
 module.exports = {
   getRegister: (req, res) => {
     res.render('register', {userCSS: true});
   },
   getLogin: async (req, res) => {
-    res.render('login', {userCSS: true});
+    if (req.isAuthenticated()) {
+      return res.redirect('/');
+    }
+    return res.render('login', {userCSS: true});
   },
   postLogin: async (req, res) => {
     const email = req.body.email || req.user.email;
@@ -15,12 +21,12 @@ module.exports = {
     user.lastLoginDate = new Date();
     user.loginTimes = user.loginTimes + 1;
     await user.save();
-    res.redirect('/');
+    return res.redirect('/');
   },
   getLogout: (req, res) => {
     req.logout();
     req.flash('success_msg', 'you are already logout!');
-    res.redirect('/user/login');
+    return res.redirect('/user/login');
   },
 
   postRegister: (req, res) => {
@@ -73,7 +79,14 @@ module.exports = {
           createDate: new Date(),
           provider: 'Local',
         });
-        req.flash('success_msg', 'Sign up Sucessfull, please sign in!');
+
+        const token = genJwtToken(email, '30m');
+        await sendMail(name, email, token);
+
+        req.flash(
+          'success_msg',
+          'Sign up Sucessfull. Please check mailbox to receive the verification mail to activate account',
+        );
         return res.redirect('/user/login');
       } catch (err) {
         return res.render('register', {
@@ -83,6 +96,26 @@ module.exports = {
         });
       }
     });
+  },
+
+  userConfirmMail: async (req, res) => {
+    const data = verifyJwtToken(req.params.token);
+    if (data.error) {
+      return res.status(404).render('404');
+    }
+    const user = await getUserByParams({email: data._id});
+
+    if (user && user.emailVerified) {
+      return res.status(404).render('404');
+    }
+
+    if (user && !user.emailVerified) {
+      user.emailVerified = true;
+      await user.save();
+      req.flash('success_msg', 'Account is actived, please sign in!');
+    }
+
+    return res.redirect('/user/login');
   },
 };
 

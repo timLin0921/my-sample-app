@@ -7,6 +7,7 @@ const {
   postLogin,
   getRegister,
   postRegister,
+  userConfirmMail,
 } = require('../controllers/user');
 
 router.get('/login', getLogin);
@@ -37,5 +38,7 @@ router.get('/register', getRegister);
 router.post('/register', postRegister);
 
 router.get('/logout', getLogout);
+
+router.get('/confirm/:token', userConfirmMail);
 
 module.exports = router;

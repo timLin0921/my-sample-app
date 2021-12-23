@@ -34,6 +34,10 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
+  emailVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

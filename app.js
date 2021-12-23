@@ -2,17 +2,18 @@ const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
 const https = require('https');
-const config = require('./config/config');
 const express = require('express');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const bodyParser = require('body-parser');
+const config = require('./config/config');
 const exphbs = require('express-handlebars');
 const methodOverride = require('method-override');
-const {authenticated} = require('./config/auth');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const authenticatedRoutes = require('./routes/authenticated');
+const errorController = require('./controllers/error');
 const swaggerRoutes = require('./routes/swagger');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -85,16 +86,14 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', authenticated, async (req, res) => {
-  res.render('index', {
-    message: 'google index',
-  });
-});
-
 // use route
+app.use('/', authenticatedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/swagger', swaggerRoutes);
+
+// 404 error page
+app.use(errorController);
 
 if (NODE_ENV === 'production') {
   app.listen(PORT, () => {

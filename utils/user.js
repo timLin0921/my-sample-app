@@ -54,6 +54,7 @@ function oauthCallback(provider) {
           password: randomPassword,
           createDate: new Date(),
           provider: provider,
+          emailVerified: true,
         });
         done(null, newUser);
       } catch (err) {

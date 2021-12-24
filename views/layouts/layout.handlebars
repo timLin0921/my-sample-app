@@ -23,7 +23,7 @@
 <body>
   <header>
     <!-- navigation -->
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-dark bg-dark">
       <div class="container">
         <div class="nav-buttons">
           {{#if isAuthenticated}}
@@ -36,8 +36,9 @@
       </div>
     </nav>
   </header>
-  <div class="flash-message container">{{> messages}}</div>
+  
   <div class="app-container">
+    <div class="flash-message container">{{> messages}}</div>
     {{{ body }}}
   </div>
   <script src="/js/libs/popper.min.js"></script>

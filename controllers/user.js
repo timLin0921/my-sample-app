@@ -2,7 +2,7 @@
 const User = require('../models/user');
 const {sendMail} = require('../utils/mail');
 const {getUserByParams} = require('../utils/user');
-const {verifyPass} = require('../utils/verifyPass');
+const {verifyPassByMail} = require('../utils/verifyPass');
 const {createUser, encryPassword} = require('../utils/user');
 const {genJwtToken, verifyJwtToken} = require('../utils/jwtVerify');
 
@@ -142,12 +142,18 @@ module.exports = {
       req.flash('fail_msg', 'Please input password/new password');
       return res.redirect('/user/profile');
     }
-    const isPassMatch = await verifyPass(email, pass);
+
+    const isPassMatch = await verifyPassByMail(email, pass);
     const passErrors = passValidator(newPass, confirmNewPass);
     errors = errors.concat(passErrors);
 
     if (!isPassMatch) {
       req.flash('fail_msg', 'password is incorrect!!');
+      return res.redirect('/user/profile');
+    }
+
+    if (pass === newPass) {
+      req.flash('fail_msg', 'New password must different with old password!!');
       return res.redirect('/user/profile');
     }
 

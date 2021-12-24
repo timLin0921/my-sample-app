@@ -60,6 +60,9 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: dbPath,
+      serialize: (session) => {
+        return session;
+      },
     }),
     cookie: {maxAge: 60 * 60 * 1000},
   }),

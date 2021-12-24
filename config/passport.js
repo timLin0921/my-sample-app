@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs');
 const config = require('./config');
 const passport = require('passport');
 const User = require('../models/user');
+const {verifyPass} = require('../utils/verifyPass');
 const LocalStrategy = require('passport-local');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -14,7 +14,8 @@ passport.use(
   new LocalStrategy(
     {usernameField: 'email', passReqToCallback: true},
     async (req, email, password, done) => {
-      const user = await User.findOne({email: email});
+      const user = await User.findOne({email});
+      console.log(user);
 
       if (!user) {
         return done(
@@ -23,16 +24,20 @@ passport.use(
           req.flash('fail_msg', 'Email / Password is incorrect!'),
         );
       }
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) throw err;
-        return isMatch
+
+      try {
+        const isPassMatch = await verifyPass(password, user.password);
+
+        return isPassMatch
           ? done(null, user)
           : done(
               null,
               false,
               req.flash('fail_msg', 'Email / Password is incorrect!'),
             );
-      });
+      } catch (err) {
+        done(null, false, req.flash('fail_msg', `has error: ${err}`));
+      }
     },
   ),
 );

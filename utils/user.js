@@ -69,4 +69,37 @@ function oauthCallback(provider) {
     }
   };
 }
-module.exports = {createUser, encryPassword, oauthCallback};
+
+/**
+ *
+ * @param {String} id
+ * @return {UserModel}
+ */
+async function getUserById(id) {
+  try {
+    return await User.findById(id);
+  } catch (err) {
+    return new Error(`has error: ${err}`);
+  }
+}
+
+/**
+ *
+ * @param {Object} params
+ * @return {Object}
+ */
+async function getUserByParams(params) {
+  try {
+    return await User.findOne(params);
+  } catch (e) {
+    return new Error(`has error: ${err}`);
+  }
+}
+
+module.exports = {
+  createUser,
+  encryPassword,
+  oauthCallback,
+  getUserByParams,
+  getUserById,
+};

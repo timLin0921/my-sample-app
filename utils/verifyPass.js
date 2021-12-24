@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const {getUserByParams} = require('./userHandler');
+const {getUserByParams} = require('./user');
 
 /**
  *

@@ -1,8 +1,8 @@
 // const mongoose = require('mongoose');
 const User = require('../models/user');
 const {sendMail} = require('../utils/mail');
-const {getUserByParams} = require('../utils/userHandler');
-const {verifyPass} = require('../utils/verifyPassword');
+const {getUserByParams} = require('../utils/user');
+const {verifyPass} = require('../utils/verifyPass');
 const {createUser, encryPassword} = require('../utils/user');
 const {genJwtToken, verifyJwtToken} = require('../utils/jwtVerify');
 
@@ -30,22 +30,17 @@ module.exports = {
     return res.redirect('/user/login');
   },
 
-  postRegister: (req, res) => {
+  postRegister: async (req, res) => {
     const {name, email, password, rePassword} = req.body;
     // error message for flash
     let errors = [];
 
-    if (!name) {
-      errors.push({message: 'Name is required!'});
-    }
-
     // not accepting empty input
-    if (!email || !password || !rePassword) {
-      errors.push({message: 'Email & Password are required!'});
+    if (!name || !email || !password || !rePassword) {
+      errors.push({message: 'Name & Email & Password are required!'});
     }
-    const passErrors = passValidator(password, rePassword);
 
-    errors = errors.concat(passErrors);
+    errors = errors.concat(passValidator(password, rePassword));
 
     // show signup page again with inputted data when invalid
     if (errors.length > 0) {
@@ -59,8 +54,9 @@ module.exports = {
       });
     }
 
-    User.findOne({email: email}).then(async (user) => {
-      // if account already exist, redirect to log in page
+    try {
+      const user = await getUserByParams({email});
+
       if (user) {
         return res.render('login', {
           email,
@@ -68,35 +64,33 @@ module.exports = {
           errors: [{message: 'Email has been registered!'}],
         });
       }
-      // encrypt password
+
       const pass = encryPassword(false, password);
 
-      try {
-        await createUser({
-          unque: `${email}_Local`,
-          name: name,
-          email: email,
-          password: pass,
-          createDate: new Date(),
-          provider: 'Local',
-        });
+      await createUser({
+        unque: `${email}_Local`,
+        name: name,
+        email: email,
+        password: pass,
+        createDate: new Date(),
+        provider: 'Local',
+      });
 
-        const token = genJwtToken(email, '30m');
-        await sendMail(name, email, token);
+      const token = genJwtToken(email, '30m');
+      await sendMail(name, email, token);
 
-        req.flash(
-          'success_msg',
-          'Sign up Sucessfull. Please check mailbox to receive the verification mail to activate account',
-        );
-        return res.redirect('/user/login');
-      } catch (err) {
-        return res.render('register', {
-          email,
-          userCSS: true,
-          errors: [{message: `${err}`}],
-        });
-      }
-    });
+      req.flash(
+        'success_msg',
+        'Sign up Sucessfull. Please check mailbox to receive the verification mail to activate account',
+      );
+      return res.redirect('/user/login');
+    } catch (err) {
+      return res.render('register', {
+        email,
+        userCSS: true,
+        errors: [{message: `${err}`}],
+      });
+    }
   },
 
   userConfirmMail: async (req, res) => {

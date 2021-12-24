@@ -2,6 +2,7 @@
 const User = require('../models/user');
 const {sendMail} = require('../utils/mail');
 const {getUserByParams} = require('../utils/userHandler');
+const {verifyPass} = require('../utils/verifyPassword');
 const {createUser, encryPassword} = require('../utils/user');
 const {genJwtToken, verifyJwtToken} = require('../utils/jwtVerify');
 
@@ -116,6 +117,64 @@ module.exports = {
     }
 
     return res.redirect('/user/welcome');
+  },
+
+  editUserName: async (req, res) => {
+    const newName = req.body.name;
+    const {email} = req.user;
+
+    if (!newName) {
+      req.flash('fail_msg', 'Please input new name!!');
+      return res.redirect('/user/profile');
+    }
+
+    try {
+      const user = await getUserByParams({email});
+      user.name = newName;
+      await user.save();
+      req.flash('success_msg', 'Successful!!');
+    } catch (err) {
+      req.flash('fail_msg', `has error: ${err}`);
+    } finally {
+      return res.redirect('/user/profile');
+    }
+  },
+  editUserPassword: async (req, res) => {
+    let errors = [];
+    const {pass, newPass, confirmNewPass} = req.body;
+    const {name, email} = req.user;
+
+    if (!pass || !newPass || !confirmNewPass) {
+      req.flash('fail_msg', 'Please input password/new password');
+      return res.redirect('/user/profile');
+    }
+    const isPassMatch = await verifyPass(email, pass);
+    const passErrors = passValidator(newPass, confirmNewPass);
+    errors = errors.concat(passErrors);
+
+    if (!isPassMatch) {
+      req.flash('fail_msg', 'password is incorrect!!');
+      return res.redirect('/user/profile');
+    }
+
+    if (errors.length > 0) {
+      return res.render('profile', {
+        name,
+        email,
+        errors,
+      });
+    }
+
+    try {
+      const user = await getUserByParams({email});
+      user.password = encryPassword(false, newPass);
+      await user.save();
+      req.flash('success_msg', 'Successful!!');
+    } catch (err) {
+      req.flash('fail_msg', `has error: ${err}!!`);
+    } finally {
+      return res.redirect('/user/profile');
+    }
   },
 };
 

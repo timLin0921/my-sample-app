@@ -10,9 +10,9 @@
 - [x] Oauth2:
   - [x] Sign up/sign in with google(/auth/google)
   - [x] Sign up/sign in with facebook(/auth/facebook)
-- [ ] User profile
-  - [ ] Reset password
-  - [ ] Reset user name
+- [x] User profile
+  - [x] Reset password
+  - [x] Reset user name
 - [x] logout (/user/logout)
 - [ ] User Database Dashboard
   - [ ] Timestamp of user sign up.
@@ -26,14 +26,13 @@
 ## API Features
 
 - [ ] Sign up with eamil and password:
-  - [ ] Form validation(email/password)
-  - [ ] Register (/user/register)
-  - [ ] Sign in (/user/login)
+  - [ ] Register (/api/register)
+  - [ ] Sign in (/api/login)
   - [ ] Email Verification
 - [ ] User profile
-  - [ ] Reset password
-  - [ ] Reset user name
-- [ ] logout (/user/logout)
+  - [ ] Reset password(/api/reset/password)
+  - [ ] Reset user name(/api/reset/name)
+- [ ] logout (/api/logout)
 - [ ] User Database Dashboard
   - [ ] Timestamp of user sign up.
   - [ ] Number of times logged in.

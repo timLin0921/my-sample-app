@@ -1,0 +1,38 @@
+<div class="container mb-5 mt-3">
+  <h1>Profile: </h1>
+  <div class="container mt-3">
+    <form action="/user/profile/edit/name" method='post' class="profile-form">
+      <div class="form-group">
+        <label for="user-name">Name</label>
+        <input type="text" class="form-control" id="user-name" placeholder="Name"
+          name="name" value={{name}}>
+      </div>
+     
+      <button type="submit" class="btn btn-outline-dark btn-save js-save">Save</button>
+    </form>
+     <div class="mt-4">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" placeholder="Email"
+          value={{email}} disabled>
+      </div>
+  </div>
+  <h1 class="mt-5">Reset Password</h1>
+  <div class="container mt-3">
+    <form class="profile-form" action="/user/profile/edit/password" method="post">
+      <div class="form-group">
+        <label for="password">Old Password</label>
+        <input type="password" class="form-control" id="password" name="pass" placeholder="Old Password">
+      </div>
+      <div class="form-group">
+        <label for="new-password">New Password</label>
+        <input type="password" class="form-control" id="new-password" name="newPass" placeholder="New Password">
+      </div>
+      <div class="form-group">
+        <label for="confirm-new-password">Confirm New Password</label>
+        <input type="password" class="form-control" id="confirm-new-password" name="confirmNewPass"
+          placeholder="Confirm New Password">
+      </div>
+      <button type="submit" class="btn btn-outline-danger btn-save js-save">Reset</button>
+    </form>
+  </div>
+</div>

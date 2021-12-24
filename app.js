@@ -76,6 +76,8 @@ app.use(passport.session());
 // use flash message
 app.use(flash({sessionKeyName: 'flashMessage'}));
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use((req, res, next) => {
   res.locals.user = req.user;
   res.locals.isAuthenticated = req.isAuthenticated();

@@ -94,23 +94,22 @@ module.exports = {
   },
 
   userConfirmMail: async (req, res) => {
-    req.session.destroy();
-    const data = verifyJwtToken(req.params.token);
-    if (data.error) {
+    try {
+      const data = verifyJwtToken(req.params.token);
+      const user = await getUserByParams({email: data._id});
+
+      if (!data.error && user && !user.emailVerified) {
+        user.emailVerified = true;
+        await user.save();
+        req.session.destroy();
+        return res.redirect('/user/welcome');
+      }
       return res.status(404).render('404');
+    } catch (err) {
+      return res
+        .status(404)
+        .render('404', {errors: [{message: `has error: ${err}`}]});
     }
-    const user = await getUserByParams({email: data._id});
-
-    if (user && user.emailVerified) {
-      return res.status(404).render('404');
-    }
-
-    if (user && !user.emailVerified) {
-      user.emailVerified = true;
-      await user.save();
-    }
-
-    return res.redirect('/user/welcome');
   },
 
   editUserName: async (req, res) => {
@@ -182,7 +181,7 @@ module.exports = {
  *
  * @param {String} password
  * @param {String} rePassword
- * @return {Array}
+ * @return {Array} error messages. ex: [{message:Password contains at least one lower and uper character}, {message: ....}]
  */
 function passValidator(password, rePassword) {
   const errors = [];

@@ -1,5 +1,3 @@
-// const mongoose = require('mongoose');
-const User = require('../models/user');
 const {sendMail} = require('../utils/mail');
 const {getUserByParams} = require('../utils/user');
 const {verifyPassByMail} = require('../utils/verifyPass');
@@ -18,9 +16,13 @@ module.exports = {
   },
   postLogin: async (req, res) => {
     const email = req.body.email || req.user.email;
-    const user = await User.findOne({email: email});
+    const user = await getUserByParams({email});
     user.lastLoginDate = new Date();
     user.loginTimes = user.loginTimes + 1;
+    user.session = {
+      createDate: req.session.createDate,
+      sessionId: req.sessionID,
+    };
     await user.save();
     return res.redirect('/');
   },

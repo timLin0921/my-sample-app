@@ -49,6 +49,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@handlebars/allow-prototype-access@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@handlebars/allow-prototype-access/-/allow-prototype-access-1.0.5.tgz#364384d1879765aad210a61becd849afab3954b3"
+  integrity sha512-D5AJO9dM6B+1scVVQ4ma05cAku5M2dEnlycggIg6RW539TdQlgbNg1G1r86fNqqNI0CHv/TVwKEB9M6ILJQCWQ==
+
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.2"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.9.2.tgz#68be55c737023009dfc5fe245d51181bb6476914"
@@ -717,6 +722,13 @@ graceful-fs@^4.2.8:
   version "4.2.8"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
   integrity sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==
+
+handlebars-dateformat@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/handlebars-dateformat/-/handlebars-dateformat-1.1.2.tgz#03c391675d707e5fd1fe6f9ff8dc7ce5e8408ffe"
+  integrity sha512-v78wdcDhyR3Xlo6SftxSvbm5nJ0B9RJ9pQJBiWD8OVSqwcqOpM7DYe5R0Xhp94bD2nqMbhmMyxiO6h+Pn7XF9A==
+  dependencies:
+    moment "^2.29.1"
 
 handlebars@^4.7.7:
   version "4.7.7"

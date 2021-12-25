@@ -1,9 +1,33 @@
 const {sendMail} = require('../utils/mail');
 const {genJwtToken} = require('../utils/jwtVerify');
+const {createUserData} = require('../utils/getData');
 
 module.exports = {
   async getHome(req, res, next) {
-    return res.render('index');
+    let data;
+    try {
+      const option = {
+        name: 1,
+        email: 1,
+        loginTimes: 1,
+        createDate: 1,
+        'session.createDate': 1,
+      };
+
+      const userData = await createUserData(option);
+
+      data = {
+        users: userData.users,
+        signUpNums: userData.signUpNum,
+        sessionMA: userData.getActiveSessionMA(7, (n) => n.toFixed(2)),
+        sessActiveNumToday: userData.activeSessNumByDate(0),
+      };
+    } catch (err) {
+      data = {};
+      console.log(err);
+    }
+
+    return res.render('index', {data});
   },
 
   confirmEmail(req, res, next) {

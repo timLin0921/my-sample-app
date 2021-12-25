@@ -1,3 +1,41 @@
 <div class="container mt-5">
-  hello word!!
+  <h1 class="mb-5">Users Dashboard</h1>
+  <div class="column container mb-3 ml-2">
+    <div class="row">
+      <p>Number of members: </p>
+      <p class="col-3">{{data.signUpNums}}</p>
+    </div>
+    <div class="row">
+      <p>Number of active sessions today: </p>
+      <p class="col-3">{{data.sessActiveNumToday}}</p>
+    </div>
+    <div class="row">
+      <p>Average number of active session(last 7 days):</p>
+      <p class="col-3">{{data.sessionMA}}</p>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Number of logins</th>
+          <th>Sign-Up date</th>
+          <th>Last Active Session date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data.users}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{email}}</td>
+          <td>{{loginTimes}}</td>
+          <td>{{dateFormat createDate "YYYY-MM-DD hh:mm:ss"}}</td>
+          <td>{{dateFormat session.createDate "YYYY-MM-DD hh:mm:ss"}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 </div>

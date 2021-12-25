@@ -38,6 +38,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  session: {
+    type: Object,
+    default: {},
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);

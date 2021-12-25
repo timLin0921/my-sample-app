@@ -79,6 +79,18 @@
   transition: all 0.3s ease-in-out;
 }
 
+table {
+  text-align: center;
+}
+
+@media screen and (max-width: 575.99px) {
+
+  table {
+    font-size: small;
+    text-align: center;
+  }
+}
+
 @media screen and (min-width: 768px) {
 
   .banner-title h1 {

@@ -1,6 +1,6 @@
 const config = require('./config');
 const passport = require('passport');
-const User = require('../models/user');
+const UserModel = require('../models/user');
 const {verifyPass} = require('../utils/verifyPass');
 const LocalStrategy = require('passport-local');
 const FacebookStrategy = require('passport-facebook').Strategy;
@@ -14,7 +14,7 @@ passport.use(
   new LocalStrategy(
     {usernameField: 'email', passReqToCallback: true},
     async (req, email, password, done) => {
-      const user = await User.findOne({email});
+      const user = await UserModel.findOne({email});
       console.log(user);
 
       if (!user) {
@@ -77,7 +77,7 @@ passport.serializeUser((user, done) => {
 
 // deserialize user instance from the session
 passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
+  UserModel.findById(id, (err, user) => {
     done(err, user);
   });
 });

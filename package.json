@@ -16,6 +16,7 @@
     "prettier": "^2.5.1"
   },
   "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.5",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
     "connect-flash": "^0.1.1",
@@ -26,6 +27,7 @@
     "express-handlebars": "^6.0.2",
     "express-session": "^1.17.2",
     "handlebars": "^4.7.7",
+    "handlebars-dateformat": "^1.1.2",
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
     "moment": "^2.29.1",

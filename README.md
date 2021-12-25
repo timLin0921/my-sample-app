@@ -14,14 +14,14 @@
   - [x] Reset password
   - [x] Reset user name
 - [x] logout (/user/logout)
-- [ ] User Database Dashboard
-  - [ ] Timestamp of user sign up.
-  - [ ] Number of times logged in.
-  - [ ] Timestamp of the last user session.
-  - [ ] User Statistics
-    - [ ] Total number of users who have signed up.
-    - [ ] Total number of users with active sessions today.
-    - [ ] Average number of active session users in the last 7 days rolling.
+- [x] User Database Dashboard
+  - [x] Timestamp of user sign up.
+  - [x] Number of times logged in.
+  - [x] Timestamp of the last user session.
+  - [x] User Statistics
+    - [x] Total number of users who have signed up.
+    - [x] Total number of users with active sessions today.
+    - [x] Average number of active session users in the last 7 days rolling.
 
 ## API Features
 

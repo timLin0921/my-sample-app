@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/user');
+const UserModel = require('../models/user');
 
 /**
  *
@@ -7,7 +7,7 @@ const User = require('../models/user');
  * @return {Promise}
  */
 function createUser(userData) {
-  return new User(userData).save();
+  return new UserModel(userData).save();
 }
 
 /**
@@ -40,7 +40,7 @@ function encryPassword(isRandom, password = null, saltLen = 10) {
 function oauthCallback(provider) {
   return async (req, accessToken, refreshToken, profile, done) => {
     try {
-      const user = await User.findOne({email: profile._json.email});
+      const user = await UserModel.findOne({email: profile._json.email});
       if (user) {
         return done(null, user);
       }
@@ -77,7 +77,7 @@ function oauthCallback(provider) {
  */
 async function getUserById(id) {
   try {
-    return await User.findById(id);
+    return await UserModel.findById(id);
   } catch (err) {
     return new Error(`has error: ${err}`);
   }
@@ -86,11 +86,26 @@ async function getUserById(id) {
 /**
  *
  * @param {Object} params
+ * @param {Object} option
  * @return {Object}
  */
-async function getUserByParams(params) {
+async function getUserByParams(params, option = {}) {
   try {
-    return await User.findOne(params);
+    return await UserModel.findOne(params, option);
+  } catch (e) {
+    return new Error(`has error: ${err}`);
+  }
+}
+
+/**
+ *
+ * @param {Object} params
+ * @param {Object} option
+ * @return {Array}
+ */
+async function getUsersByParams(params, option = {}) {
+  try {
+    return await UserModel.find(params, option);
   } catch (e) {
     return new Error(`has error: ${err}`);
   }
@@ -98,8 +113,9 @@ async function getUserByParams(params) {
 
 module.exports = {
   createUser,
+  getUserById,
   encryPassword,
   oauthCallback,
   getUserByParams,
-  getUserById,
+  getUsersByParams,
 };

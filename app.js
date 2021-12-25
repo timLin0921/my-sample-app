@@ -6,17 +6,22 @@ const express = require('express');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
+const Handlebars = require('handlebars');
 const bodyParser = require('body-parser');
 const config = require('./config/config');
-const exphbs = require('express-handlebars');
-const methodOverride = require('method-override');
+const session = require('express-session');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
-const authenticatedRoutes = require('./routes/authenticated');
-const errorController = require('./controllers/error');
-const swaggerRoutes = require('./routes/swagger');
-const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const exphbs = require('express-handlebars');
+const methodOverride = require('method-override');
+const swaggerRoutes = require('./routes/swagger');
+const errorController = require('./controllers/error');
+const hbDateFormat = require('handlebars-dateformat');
+const authenticatedRoutes = require('./routes/authenticated');
+const {
+  allowInsecurePrototypeAccess,
+} = require('@handlebars/allow-prototype-access');
 
 const app = express();
 const {NODE_ENV, DB_HOST, DB_PORT, DB_NAME, PORT, SESSION_SECRET} = config;
@@ -32,7 +37,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 const hbs = exphbs.create({
   defaultLayout: 'layout',
   partialsDir: ['views/partials/'],
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
+  helpers: {dateFormat: hbDateFormat},
 });
+
 // define handlebars using
 app.engine('handlebars', hbs.engine);
 // tell express that all templates ahead will be handlebars
@@ -60,8 +68,11 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: dbPath,
-      serialize: (session) => {
-        return session;
+      serialize: (sess) => {
+        if (!sess.hasOwnProperty('createDate')) {
+          sess.createDate = new Date();
+        }
+        return sess;
       },
     }),
     cookie: {maxAge: 60 * 60 * 1000},

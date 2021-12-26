@@ -39,10 +39,12 @@ function sum(arr) {
   return arr.reduce((cur, acc) => cur + acc);
 }
 
-const a = Array(100)
-  .fill(1)
-  .map((el, index) => index + 1);
-console.log(a);
-const res = sma(a, 9);
-console.log(res);
+// example
+// const a = Array(100)
+//   .fill(1)
+//   .map((el, index) => index + 1);
+// console.log(a);
+// const res = sma(a, 9);
+// console.log(res);
+
 module.exports = {sma};

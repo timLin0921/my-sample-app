@@ -12,6 +12,7 @@ const {
   editUserName,
   userConfirmMail,
   editUserPassword,
+  registerVaildate,
 } = require('../controllers/user');
 
 router.get('/login', getLogin);
@@ -39,7 +40,7 @@ router.post(
 
 router.get('/register', getRegister);
 
-router.post('/register', postRegister);
+router.post('/register', registerVaildate, postRegister);
 
 router.get('/logout', getLogout);
 

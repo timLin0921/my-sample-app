@@ -1,8 +1,8 @@
 const {sendMail} = require('../utils/mail');
 const {getUserByParams} = require('../utils/user');
-const {verifyPassByMail} = require('../utils/verifyPass');
 const {createUser, encryPassword} = require('../utils/user');
 const {genJwtToken, verifyJwtToken} = require('../utils/jwtVerify');
+const {verifyPassByMail, passValidator} = require('../utils/verifyPass');
 
 module.exports = {
   getRegister: (req, res) => {
@@ -31,40 +31,49 @@ module.exports = {
     req.flash('success_msg', 'you are already logout!');
     return res.redirect('/user/login');
   },
-
-  postRegister: async (req, res) => {
+  postRegister: (req, res) => {
     const {name, email, password, rePassword} = req.body;
-    // error message for flash
-    let errors = [];
+    if (res.locals.success) {
+      res.locals.success_msg = res.locals.success;
+    }
+    return res.render(res.locals.renderPage, {
+      name,
+      email,
+      password,
+      rePassword,
+      userCSS: true,
+      errors: res.locals.errors,
+    });
+  },
+  registerVaildate: async (req, res, next) => {
+    const {name, email, password, rePassword} = req.body;
+
+    res.locals.renderPage = 'register';
 
     // not accepting empty input
     if (!name || !email || !password || !rePassword) {
-      errors.push({message: 'Name & Email & Password are required!'});
+      res.locals.errors = [{message: 'Name & Email & Password are required!'}];
+
+      return next();
     }
 
-    errors = errors.concat(passValidator(password, rePassword));
+    const errors = passValidator(password, rePassword);
 
     // show signup page again with inputted data when invalid
     if (errors.length > 0) {
-      return res.render('register', {
-        name,
-        email,
-        password,
-        rePassword,
-        errors,
-        userCSS: true,
-      });
+      res.locals.errors = errors;
+      return next();
     }
 
     try {
       const user = await getUserByParams({email});
 
+      res.locals.renderPage = 'login';
+
       if (user) {
-        return res.render('login', {
-          email,
-          userCSS: true,
-          errors: [{message: 'Email has been registered!'}],
-        });
+        res.locals.renderPage = 'login';
+        res.locals.errors = [{message: 'Email has been registered!'}];
+        return next();
       }
 
       const pass = encryPassword(false, password);
@@ -81,20 +90,17 @@ module.exports = {
       const token = genJwtToken(email, '30m');
       await sendMail(name, email, token);
 
-      req.flash(
-        'success_msg',
-        'Sign up Sucessfull. Please check mailbox to receive the verification mail to activate account',
-      );
-      return res.redirect('/user/login');
+      res.locals.success =
+        'Sign up Sucessfull. Please check mailbox to receive the verification mail to activate account';
+
+      return next();
     } catch (err) {
       return res.render('register', {
-        email,
         userCSS: true,
         errors: [{message: `${err}`}],
       });
     }
   },
-
   userConfirmMail: async (req, res) => {
     try {
       const data = verifyJwtToken(req.params.token);
@@ -178,44 +184,3 @@ module.exports = {
     }
   },
 };
-
-/**
- *
- * @param {String} password
- * @param {String} rePassword
- * @return {Array} error messages. ex: [{message:Password contains at least one lower and uper character}, {message: ....}]
- */
-function passValidator(password, rePassword) {
-  const errors = [];
-
-  if (!/^(?=.*[a-z])(?=.*[A-Z]).+$/.test(password)) {
-    errors.push({
-      message: 'Password contains at least one lower and uper character',
-    });
-  }
-
-  if (!/^(?=.*\d).+$/.test(password)) {
-    errors.push({
-      message: 'Password contains at least one digit character',
-    });
-  }
-
-  if (password.length < 8) {
-    errors.push({
-      message: 'Password contains at least 8 characters',
-    });
-  }
-
-  if (!/\W+/.test(password)) {
-    errors.push({
-      message: 'Password contains at least one special character',
-    });
-  }
-
-  // password and confirm password must be the same
-  if (password !== rePassword) {
-    errors.push({message: 'Confirm Password is different from password'});
-  }
-
-  return errors;
-}

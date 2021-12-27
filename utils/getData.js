@@ -7,7 +7,7 @@ const {getSessionsByParams} = require('./session');
 /**
  *
  * @param {Object} option
- * @return {UserData}
+ * @return {UserData} return instance of UserData
  */
 async function createUserData(option = {}) {
   const users = await UserData.getAllUsers(option);

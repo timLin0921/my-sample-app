@@ -10,9 +10,11 @@ const Handlebars = require('handlebars');
 const bodyParser = require('body-parser');
 const config = require('./config/config');
 const session = require('express-session');
+const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const MongoStore = require('connect-mongo');
+const cookieParser = require('cookie-parser');
 const exphbs = require('express-handlebars');
 const methodOverride = require('method-override');
 const swaggerRoutes = require('./routes/swagger');
@@ -61,6 +63,8 @@ db.once('open', () => {
   console.log('mongodb connected!');
 });
 
+app.use(cookieParser(SESSION_SECRET));
+
 app.use(
   session({
     secret: SESSION_SECRET,
@@ -79,6 +83,7 @@ app.use(
   }),
 );
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(methodOverride('_method'));
@@ -107,6 +112,7 @@ app.use('/', authenticatedRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/swagger', swaggerRoutes);
+app.use('/api', apiRoutes);
 
 // 404 error page
 app.use(errorController);

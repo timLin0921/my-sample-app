@@ -36,8 +36,6 @@ function sendMail(name, mail, code) {
       if (err) {
         return reject(err);
       }
-      console.log(info.messageId);
-      console.log(info.response);
       resolve();
     });
   });

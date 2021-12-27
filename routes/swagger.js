@@ -12,14 +12,8 @@ const options = {
         email: '',
       },
     },
-    tags: [
-      {
-        name: 'AMSS5',
-        description: 'AMSS5 API',
-      },
-    ],
-    schemes: ['http', 'https'],
-    host: 'localhost:3124',
+    schemes: ['https'],
+    host: 'localhost:3000',
     basePath: '/api',
   },
   apis: ['./routes/api.js'],

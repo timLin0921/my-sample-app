@@ -20,8 +20,6 @@ services:
   mongodb:
     image: mongo
     container_name: mongodb
-    volumes:
-      - ~/Project/docker/node12_dev/Project/mongo/data:/data/db
     ports:
       - 27017:27017
     networks:

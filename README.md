@@ -95,6 +95,12 @@ git clone https://github.com/timLin0921/my-sample-app.git
 # change directory to our repo
 cd my-sample-app
 
+# if you not install mkcert
+brew install mkcert #(for Mac)
+
+#create SSL .pem
+mkcert localhost
+
 # docker-compose 
 docker-compose up -d
 

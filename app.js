@@ -116,7 +116,7 @@ app.use('/api', apiRoutes);
 // 404 error page
 app.use(errorController);
 
-if (NODE_ENV === 'production') {
+if (NODE_ENV == 'production') {
   app.listen(PORT, () => {
     console.log(`Express is listening on http://localhost:${PORT}`);
   });

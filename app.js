@@ -27,8 +27,6 @@ const {
 
 const app = express();
 const {NODE_ENV, DB_PATH, PORT, SESSION_SECRET} = config;
-const key = fs.readFileSync('./localhost-key.pem');
-const cert = fs.readFileSync('./localhost.pem');
 
 app.use(cors());
 
@@ -121,6 +119,8 @@ if (NODE_ENV == 'production') {
     console.log(`Express is listening on http://localhost:${PORT}`);
   });
 } else {
+  const key = fs.readFileSync('./localhost-key.pem');
+  const cert = fs.readFileSync('./localhost.pem');
   const server = https.createServer({key: key, cert: cert}, app);
 
   server.listen(PORT, () => {

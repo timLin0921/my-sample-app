@@ -26,10 +26,9 @@ const {
 } = require('@handlebars/allow-prototype-access');
 
 const app = express();
-const {NODE_ENV, DB_PATH, DB_NAME, PORT, SESSION_SECRET} = config;
+const {NODE_ENV, DB_PATH, PORT, SESSION_SECRET} = config;
 const key = fs.readFileSync('./localhost-key.pem');
 const cert = fs.readFileSync('./localhost.pem');
-const dbPath = `mongodb://${DB_PATH}/${DB_NAME}`;
 
 app.use(cors());
 
@@ -48,7 +47,7 @@ app.engine('handlebars', hbs.engine);
 // tell express that all templates ahead will be handlebars
 app.set('view engine', 'handlebars');
 
-mongoose.connect(dbPath, {
+mongoose.connect(DB_PATH, {
   useNewUrlParser: true,
 });
 
@@ -71,7 +70,7 @@ app.use(
     resave: true,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: dbPath,
+      mongoUrl: DB_PATH,
       serialize: (sess) => {
         if (!sess.hasOwnProperty('createDate')) {
           sess.createDate = new Date();

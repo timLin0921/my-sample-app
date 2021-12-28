@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    container_name: web-app
+    # restart: always
+    environment:
+      - HOME=/app
+    ports:
+      - 3000:3000
+    entrypoint:
+      - yarn
+      - start
+    depends_on:
+      - db
+    networks:
+      - default
+      
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - ~/Project/docker/node12_dev/Project/mongo/data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - default

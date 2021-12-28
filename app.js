@@ -26,10 +26,10 @@ const {
 } = require('@handlebars/allow-prototype-access');
 
 const app = express();
-const {NODE_ENV, DB_HOST, DB_PORT, DB_NAME, PORT, SESSION_SECRET} = config;
+const {NODE_ENV, DB_PATH, DB_NAME, PORT, SESSION_SECRET} = config;
 const key = fs.readFileSync('./localhost-key.pem');
 const cert = fs.readFileSync('./localhost.pem');
-const dbPath = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+const dbPath = `mongodb://${DB_PATH}/${DB_NAME}`;
 
 app.use(cors());
 

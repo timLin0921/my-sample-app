@@ -43,3 +43,5 @@
     - [x] Average number of active session users in the last 7 days rolling.
 
 ## Swagger Doc Url: /swagger
+
+## You can use mkcert create ssl, reference: https://github.com/FiloSottile/mkcert/blob/master/README.md#supported-root-stores

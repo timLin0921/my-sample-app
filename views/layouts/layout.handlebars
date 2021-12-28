@@ -27,11 +27,12 @@
       <div class="container">
         <div class="nav-buttons">
           {{#if isAuthenticated}}
-          <a href="/user/logout"><i class="fas fa-sign-out-alt"></i></a>
-          <a href="/user/profile"><i class="far fa-user-circle"></i></a>
+          <a href="/user/logout" class="float-right ml-3"><i class="fas fa-sign-out-alt"></i></a>
+          <a href="/user/profile" class="float-right ml-3"><i class="far fa-user-circle"></i></a>
           {{else}}
-          <a href="/user/login"><i class="fas fa-sign-in-alt"></i></a>
+          <a href="/user/login" class="float-right ml-3"><i class="fas fa-sign-in-alt"></i></a>
           {{/if}}
+          <a href="/"><i class="fas fa-home"></i></a>
         </div>
       </div>
     </nav>

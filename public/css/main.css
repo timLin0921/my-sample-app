@@ -17,9 +17,7 @@
 }
 
 .nav-buttons {
-  display: flex;
-  justify-content: space-around;
-  width: 100px;
+  width: 100%;
 }
 
 .nav-buttons a > i{

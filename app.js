@@ -118,7 +118,7 @@ app.use(errorController);
 
 if (NODE_ENV === 'production') {
   app.listen(PORT, () => {
-    console.log(`Express is listening on https://localhost:${PORT}`);
+    console.log(`Express is listening on http://localhost:${PORT}`);
   });
 } else {
   const server = https.createServer({key: key, cert: cert}, app);

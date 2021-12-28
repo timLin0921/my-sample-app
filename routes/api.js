@@ -16,53 +16,6 @@ const {
   getStatisticsData,
 } = require('../controllers/api');
 
-/**
- * @swagger
- * /login:
- *  post:
- *    summary: login & get token
- *    produces:
- *      - application/json
- *    parameters:
- *      - in: formData
- *        name: email
- *        required: true
- *        type: string
- *      - in: formData
- *        name: password
- *        required: true
- *        type: string
- *    responses:
- *      200:
- *        description: login successful
- *        schema:
- *          type: object
- *          required:
- *            - status
- *            - message
- *            - token
- *          properties:
- *            status:
- *              type: boolean
- *            message:
- *              type: string
- *            token:
- *              type: string
- *      401:
- *        description: login fail
- *        schema:
- *          type: object
- *          required:
- *            - status
- *            - message
- *          properties:
- *            status:
- *              type: boolean
- *            message:
- *              type: string
- *
- *
- */
 router.post(
   '/login',
   loginValidate,
@@ -72,6 +25,7 @@ router.post(
   }),
   postApiLogin,
 );
+
 router.get('/logout', logout);
 router.get('/login/fail', loginFail);
 router.post('/user/profile', apiAuthlization, editUserName);

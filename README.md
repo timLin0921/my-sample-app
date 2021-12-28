@@ -41,3 +41,5 @@
     - [x] Total number of users who have signed up.
     - [x] Total number of users with active sessions today.
     - [x] Average number of active session users in the last 7 days rolling.
+
+## Swagger Doc Url: /swagger

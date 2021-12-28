@@ -33,9 +33,10 @@ module.exports = {
     next();
   },
   loginFail: (req, res) => {
-    return res
-      .status(401)
-      .json({statue: false, message: 'Email/Password is incorrect!!'});
+    return res.status(401).json({
+      statue: false,
+      errors: [{message: 'Email/Password is incorrect!!'}],
+    });
   },
   postApiLogin: async (req, res) => {
     const email = req.body.email || req.user.email;
@@ -80,6 +81,13 @@ module.exports = {
     }
     try {
       const user = await getUserByParams({email});
+
+      if (user.name === newName) {
+        return res.status(406).json({
+          status: false,
+          errors: [{message: 'User new name must different with old name'}],
+        });
+      }
       user.name = newName;
       await user.save();
       return res
@@ -107,21 +115,21 @@ module.exports = {
     const passErrors = passValidator(newPass, confirmNewPass);
 
     if (!isPassMatch) {
-      return res.status(200).json({
+      return res.status(406).json({
         status: false,
         errors: [{message: 'password is incorrect!!'}],
       });
     }
 
     if (pass === newPass) {
-      return res.status(200).json({
+      return res.status(406).json({
         status: false,
         errors: [{message: 'New password must different with old password!!'}],
       });
     }
 
     if (passErrors.length > 0) {
-      return res.status(200).json({
+      return res.status(406).json({
         status: false,
         errors: passErrors,
       });
@@ -136,7 +144,7 @@ module.exports = {
         message: 'Change Successful!!',
       });
     } catch (err) {
-      return res.status(200).json({
+      return res.status(500).json({
         status: false,
         errors: [{message: `has error: ${err}`}],
       });
@@ -184,8 +192,16 @@ module.exports = {
     return res.status(apiCode).json({status: apiStatus, message: apiSuccess});
   },
   logout: (req, res) => {
-    req.logout();
-    return res.status(200).json({status: true, message: 'Logout Successful!!'});
+    try {
+      req.logout();
+      return res
+        .status(200)
+        .json({status: true, message: 'Logout Successful!!'});
+    } catch (e) {
+      return res
+        .status(500)
+        .json({status: true, errors: [{message: 'Logout Successful!!'}]});
+    }
   },
 };
 
@@ -217,7 +233,8 @@ const verification = (req, res) => {
     return;
   }
 
-  if (res.locals.user && !res.locals.user.emailVerified) {
+  const isResendRoute = /resend/.test(req.path);
+  if (!isResendRoute && res.locals.user && !res.locals.user.emailVerified) {
     res.locals.apiErrors = [{message: 'Please verify mailbox!!'}];
     return;
   }

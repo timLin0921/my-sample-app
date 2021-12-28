@@ -1,27 +1,11 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const router = new express.Router();
-
-const options = {
-  swaggerDefinition: {
-    info: {
-      title: 'REST - Swagger',
-      version: '1.0.0',
-      description: 'REST API with Swagger doc',
-      contact: {
-        email: '',
-      },
-    },
-    schemes: ['https'],
-    host: 'localhost:3000',
-    basePath: '/api',
-  },
-  apis: ['./routes/api.js'],
-};
+const swaggerDocument = require('../swagger.json');
 
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJSDoc(swaggerDocument);
 require('swagger-model-validator')(swaggerSpec);
 
 router.get('/json', function (req, res) {

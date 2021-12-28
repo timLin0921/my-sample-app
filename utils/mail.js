@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 
-const {GOOGLE_MAIL_AC, GOOGLE_MAIL_PW} = config;
+const {GOOGLE_MAIL_AC, GOOGLE_MAIL_PW, GOOGLE_MAIL_CALLBACK} = config;
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -28,7 +28,7 @@ function sendMail(name, mail, code) {
     html: `<h1>Email Confirmation</h1>
     <h2>Hello ${name}</h2>
     <p>Thank you for sign up. Please confirm your email by clicking on the following link</p>
-    <a href=https://localhost:3000/user/confirm/${code}> Click here</a>`,
+    <a href=${GOOGLE_MAIL_CALLBACK}${code}> Click here</a>`,
   };
 
   return new Promise((resolve, reject) => {

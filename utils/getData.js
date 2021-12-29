@@ -14,7 +14,7 @@ async function createUserData(option = {}) {
   const sessions = await UserData.getAllSessions();
   const activeSessByDay = await sessionModel
     .aggregate()
-    .match({'session.password': {$ne: {}}})
+    .match({'session.passport': {$exists: true, $ne: {}}})
     .group({
       _id: {
         year: {$year: '$session.createDate'},
